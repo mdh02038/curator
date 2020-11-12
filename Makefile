@@ -4,14 +4,24 @@
 OS ?= linux
 ARCH ?= ??? 
 ALL_ARCH ?= arm64 amd64
+comma:=,
+empty=
+space:=$(empty) $(empty)
 DOCKER_IMAGE ?= raquette/curator
 VERSION = "v1"
 TAG ?= ${VERSION}
 REPOSITORY_GENERIC = ${DOCKER_IMAGE}:${TAG}
 REPOSITORY_ARCH = ${DOCKER_IMAGE}:${TAG}-${ARCH}
+MANIFEST_TAG = $(DOCKER_IMAGE):$(TAG)
+PLATFORMS:=$(subst $(space),$(comma),$(patsubst %,linux/%,$(ALL_ARCH)))
 
+#default: auto_build
 default: release-all
 #default: binary-images
+
+autobuild:
+	docker buildx build  --push --pull --platform $(PLATFORMS) -t "$(MANIFEST_TAG)"  --build-arg VERSION=${VERSION} -f Dockerfile . 
+
 
 binary-image: 
 	docker buildx build  --pull --platform ${OS}/${ARCH} -t "${REPOSITORY_ARCH}"  --build-arg VERSION=${VERSION} -f Dockerfile . 
