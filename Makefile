@@ -1,3 +1,7 @@
+#            VERSION=${{ steps.prepare.outputs.version }} \
+#             PLATFORMS=${{ steps.prepare.outputs.platforms }} \
+#             DOCKER_IMAGE=${{ steps.prepare.outputs.docker_image }} 
+
 
 .PHONY: default binary-image clean-images clean push release release-all manifest clean-image clean
 
@@ -8,12 +12,12 @@ comma:=,
 empty=
 space:=$(empty) $(empty)
 DOCKER_IMAGE ?= raquette/curator
-VERSION = "v1"
+VERSION ?= "v1"
 TAG ?= ${VERSION}
 REPOSITORY_GENERIC = ${DOCKER_IMAGE}:${TAG}
 REPOSITORY_ARCH = ${DOCKER_IMAGE}:${TAG}-${ARCH}
 MANIFEST_TAG = $(DOCKER_IMAGE):$(TAG)
-PLATFORMS:=$(subst $(space),$(comma),$(patsubst %,linux/%,$(ALL_ARCH)))
+PLATFORMS ?= $(subst $(space),$(comma),$(patsubst %,linux/%,$(ALL_ARCH)))
 
 default: release-all
 #default: binary-images
