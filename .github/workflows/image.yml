@@ -3,8 +3,6 @@ name: build our image
 on:
   push:
     branches: main
-  push:
-    branches: master
 
 jobs:
   build:
