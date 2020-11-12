@@ -15,12 +15,12 @@ REPOSITORY_ARCH = ${DOCKER_IMAGE}:${TAG}-${ARCH}
 MANIFEST_TAG = $(DOCKER_IMAGE):$(TAG)
 PLATFORMS:=$(subst $(space),$(comma),$(patsubst %,linux/%,$(ALL_ARCH)))
 
-#default: auto_build
 default: release-all
 #default: binary-images
 
-autobuild:
-	docker buildx build  --push --pull --platform $(PLATFORMS) -t "$(MANIFEST_TAG)"  --build-arg VERSION=${VERSION} -f Dockerfile . 
+auto-build-and-push:
+	docker buildx build  --push --platform $(PLATFORMS) -t "$(MANIFEST_TAG)"  --build-arg VERSION=${VERSION} -f Dockerfile . 
+#             --output "type=image,push=true" \
 
 
 binary-image: 
