@@ -24,12 +24,12 @@ jobs:
         run: echo ${{ steps.buildx.outputs.platforms }}
       - name: login to docker hub
         run: echo "${{ secrets.DOCKER_PASSWORD }}" | docker login -u "${{ secrets.DOCKER_USERNAME }}" --password-stdin
-#      - name: build the image
-#        run: |
-#          docker buildx build  
-#             --platform linux/arm64,linux/amd64 
-#             --tag "raquette/curator:"autobuild"  
-#             --build-arg VERSION="autobuild" 
-#             -f Dockerfile . 
-#
+      - name: build the image
+        run: |
+          docker buildx build  
+             --platform linux/arm64,linux/amd64 
+             --tag "raquette/curator:autobuild"  
+             --build-arg VERSION="autobuild" 
+             -f Dockerfile . 
+
 
